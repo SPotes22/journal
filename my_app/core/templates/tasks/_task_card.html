@@ -1,0 +1,23 @@
+<li class="task-card task-{{ task.creator.color }} {% if task.is_done %}task-done{% endif %}">
+    {% if task.created_by_id == current_user.id %}
+    <form method="post" action="{{ url_for('tasks.toggle_task', task_id=task.id) }}" class="task-toggle">
+        <button type="submit" aria-label="Marcar como realizada">{{ '✓' if task.is_done else '○' }}</button>
+    </form>
+    {% else %}
+    <span class="task-toggle-status">{{ '✓' if task.is_done else '○' }}</span>
+    {% endif %}
+    <div class="task-body">
+        <span class="task-title">{{ task.title }}</span>
+        {% if task.time %}<span class="task-time">{{ task.time.strftime('%H:%M') }}</span>{% endif %}
+        <span class="task-owner">{{ task.creator.display_name }}</span>
+        {% if task.notes %}<p class="task-notes">{{ task.notes }}</p>{% endif %}
+    </div>
+    {% if task.created_by_id == current_user.id %}
+    <div class="task-actions">
+        <a href="{{ url_for('tasks.edit_task', task_id=task.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('tasks.delete_task', task_id=task.id) }}" onsubmit="return confirm('Borrar esta tarea?');">
+            <button type="submit">Borrar</button>
+        </form>
+    </div>
+    {% endif %}
+</li>

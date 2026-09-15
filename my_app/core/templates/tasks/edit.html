@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Editar tarea{% endblock %}
+{% block content %}
+<div class="login-card">
+    <h1>Editar tarea</h1>
+    <form method="post">
+        <input type="text" name="title" value="{{ task.title }}" required>
+        <input type="date" name="date" value="{{ task.date.isoformat() }}" required>
+        <input type="time" name="time" value="{{ task.time.strftime('%H:%M') if task.time else '' }}">
+        <textarea name="notes">{{ task.notes or '' }}</textarea>
+        <button type="submit">Guardar cambios</button>
+    </form>
+    <a href="{{ url_for('tasks.day_view', date_str=task.date.isoformat()) }}">Cancelar</a>
+</div>
+{% endblock %}

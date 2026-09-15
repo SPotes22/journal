@@ -1,0 +1,10 @@
+<details class="task-form">
+    <summary>+ Anadir tarea</summary>
+    <form method="post" action="{{ url_for('tasks.create_task') }}">
+        <input type="text" name="title" placeholder="Titulo" required>
+        <input type="date" name="date" value="{{ (day if day is defined else today).isoformat() }}" required>
+        <input type="time" name="time">
+        <textarea name="notes" placeholder="Notas (opcional)"></textarea>
+        <button type="submit">Guardar</button>
+    </form>
+</details>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ day.strftime('%d/%m/%Y') }}{% endblock %}
+{% block content %}
+<div class="day-nav">
+    <a href="{{ url_for('tasks.day_view', date_str=prev_day) }}">&larr; Anterior</a>
+    <h2>{{ day|fecha_larga }}</h2>
+    <a href="{{ url_for('tasks.day_view', date_str=next_day) }}">Siguiente &rarr;</a>
+</div>
+
+<ul class="task-list">
+    {% for task in tasks %}
+        {% include "tasks/_task_card.html" %}
+    {% else %}
+        <li class="empty">No hay tareas para este dia.</li>
+    {% endfor %}
+</ul>
+
+{% include "tasks/_task_form.html" %}
+{% endblock %}

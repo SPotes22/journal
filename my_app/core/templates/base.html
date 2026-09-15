@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Rutina{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="{{ url_for('tasks.today') }}">Hoy</a>
+            <a href="{{ url_for('tasks.week_view', date_str=today.isoformat()) }}">Semana</a>
+        </div>
+        <div class="nav-user user-{{ current_user.color }}">
+            <span>{{ current_user.display_name }}</span>
+            <a href="{{ url_for('auth.change_password') }}">Contrasena</a>
+            <a href="{{ url_for('auth.logout') }}">Salir</a>
+        </div>
+    </nav>
+    {% endif %}
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="flash flash-{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% if due_reminders %}
+        <div class="reminder-banner">
+            <strong>Pendiente hoy:</strong>
+            <ul>
+                {% for task in due_reminders %}
+                <li>{{ task.title }}{% if task.time %} - {{ task.time.strftime('%H:%M') }}{% endif %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+</body>
+</html>

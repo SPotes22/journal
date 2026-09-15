@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Semana{% endblock %}
+{% block content %}
+<div class="day-nav">
+    <a href="{{ url_for('tasks.week_view', date_str=prev_week) }}">&larr; Semana anterior</a>
+    <h2>Semana del {{ days[0].strftime('%d/%m') }} al {{ days[-1].strftime('%d/%m/%Y') }}</h2>
+    <a href="{{ url_for('tasks.week_view', date_str=next_week) }}">Semana siguiente &rarr;</a>
+</div>
+
+<div class="week-grid">
+    {% for d in days %}
+    <div class="week-day">
+        <h3><a href="{{ url_for('tasks.day_view', date_str=d.isoformat()) }}">{{ d|fecha_corta }}</a></h3>
+        <ul class="task-list">
+            {% for task in tasks_by_day[d] %}
+                {% include "tasks/_task_card.html" %}
+            {% else %}
+                <li class="empty">-</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+
+{% include "tasks/_task_form.html" %}
+{% endblock %}
